@@ -29,7 +29,7 @@ class _AuthState extends State<Auth> {
           children: [
             const SizedBox(height: 100),
             Icon(Icons.lock, size: 100, color: Theme.of(context).colorScheme.primary),
-            const SizedBox(height: 20),
+            const SizedBox(height: 80),
             TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -41,11 +41,12 @@ class _AuthState extends State<Auth> {
                 return null;
               },
               decoration: const InputDecoration(
-                hintText: 'User',
+                contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                hintText: 'Enter your user',
                 label: Text('User'),
               ),
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 35),
             ValueListenableBuilder<bool>(
               valueListenable: _showPasswordNotifier,
               builder: (context, showPassword, _) {
@@ -61,9 +62,10 @@ class _AuthState extends State<Auth> {
                   },
                   obscureText: showPassword,
                   decoration: InputDecoration(
-                    hintText: 'Password',
+                    hintText: 'Enter your password',
                     label: const Text('Password'),
-                    suffix: IconButton(
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    suffixIcon: IconButton(
                       onPressed: () {
                         _showPasswordNotifier.value = !_showPasswordNotifier.value;
                       },
