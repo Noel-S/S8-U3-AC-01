@@ -25,7 +25,11 @@ class _AuthState extends State<Auth> {
       body: Form(
         key: _formKey,
         child: ListView(
+          padding: const EdgeInsets.all(20),
           children: [
+            const SizedBox(height: 100),
+            Icon(Icons.lock, size: 100, color: Theme.of(context).colorScheme.primary),
+            const SizedBox(height: 20),
             TextFormField(
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -36,6 +40,10 @@ class _AuthState extends State<Auth> {
                 }
                 return null;
               },
+              decoration: const InputDecoration(
+                hintText: 'User',
+                label: Text('User'),
+              ),
             ),
             const SizedBox(height: 10),
             ValueListenableBuilder<bool>(
@@ -52,19 +60,35 @@ class _AuthState extends State<Auth> {
                     return null;
                   },
                   obscureText: showPassword,
+                  decoration: InputDecoration(
+                    hintText: 'Password',
+                    label: const Text('Password'),
+                    suffix: IconButton(
+                      onPressed: () {
+                        _showPasswordNotifier.value = !_showPasswordNotifier.value;
+                      },
+                      icon: Icon(showPassword ? Icons.visibility : Icons.visibility_off),
+                    ),
+                  ),
                 );
               },
             ),
           ],
         ),
       ),
-      bottomNavigationBar: SizedBox(
+      bottomNavigationBar: SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextButton(
               onPressed: () {
                 // validate user
+                final isValid = _formKey.currentState!.validate();
+                if (!isValid) {
+                  showDialog(context: context, builder: (context) => const AlertDialog(content: Text('Invalid user or password')));
+                  return;
+                }
+                Navigator.pushReplacementNamed(context, '/home');
               },
               child: const Text('SIGN IN'),
             ),
