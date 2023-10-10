@@ -14,14 +14,14 @@ class _AuthState extends State<Auth> {
   final _user = 'moviles';
   final _password = 'moveiles';
   final _showPasswordNotifier = ValueNotifier<bool>(false);
+  final _userFocusNode = FocusNode();
+  final _passwordFocusNode = FocusNode();
+  final _userController = TextEditingController();
+  final _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-      //   title: const Text('Login'),
-      // ),
       body: Form(
         key: _formKey,
         child: ListView(
@@ -31,6 +31,8 @@ class _AuthState extends State<Auth> {
             Icon(Icons.lock, size: 100, color: Theme.of(context).colorScheme.primary),
             const SizedBox(height: 80),
             TextFormField(
+              focusNode: _userFocusNode,
+              controller: _userController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your user';
@@ -51,6 +53,8 @@ class _AuthState extends State<Auth> {
               valueListenable: _showPasswordNotifier,
               builder: (context, showPassword, _) {
                 return TextFormField(
+                  focusNode: _passwordFocusNode,
+                  controller: _passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
@@ -87,10 +91,56 @@ class _AuthState extends State<Auth> {
                 // validate user
                 final isValid = _formKey.currentState!.validate();
                 if (!isValid) {
-                  showDialog(context: context, builder: (context) => const AlertDialog(content: Text('Invalid user or password')));
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      content: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.error, color: Colors.red, size: 50),
+                          const SizedBox(height: 10),
+                          const Text('Invalid user'),
+                          const SizedBox(height: 10),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ).then((_) {
+                    if (_userController.text != _user) {
+                      _userFocusNode.requestFocus();
+                    } else if (_passwordController.text != _password) {
+                      _passwordFocusNode.requestFocus();
+                    }
+                  });
                   return;
                 }
-                Navigator.pushReplacementNamed(context, '/home');
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(Icons.error, color: Colors.red, size: 50),
+                        const SizedBox(height: 10),
+                        const Text('Valid user, redirecting to home'),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  ),
+                ).then((_) {
+                  Navigator.pushReplacementNamed(context, '/home');
+                });
               },
               child: const Text('SIGN IN'),
             ),
