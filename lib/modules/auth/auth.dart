@@ -12,7 +12,7 @@ class Auth extends StatefulWidget {
 class _AuthState extends State<Auth> {
   final _formKey = GlobalKey<FormState>();
   final _user = 'moviles';
-  final _password = 'moveiles';
+  final _password = 'moviles';
   final _showPasswordNotifier = ValueNotifier<bool>(false);
   final _userFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
@@ -64,7 +64,7 @@ class _AuthState extends State<Auth> {
                     }
                     return null;
                   },
-                  obscureText: showPassword,
+                  obscureText: !showPassword,
                   decoration: InputDecoration(
                     hintText: 'Enter your password',
                     label: const Text('Password'),
@@ -125,7 +125,7 @@ class _AuthState extends State<Auth> {
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(Icons.error, color: Colors.red, size: 50),
+                        const Icon(Icons.check_circle_rounded, color: Colors.green, size: 50),
                         const SizedBox(height: 10),
                         const Text('Valid user, redirecting to home'),
                         const SizedBox(height: 10),
@@ -139,7 +139,7 @@ class _AuthState extends State<Auth> {
                     ),
                   ),
                 ).then((_) {
-                  Navigator.pushReplacementNamed(context, '/home');
+                  Navigator.pushReplacementNamed(context, '/home', arguments: _userController.text);
                 });
               },
               child: const Text('SIGN IN'),
