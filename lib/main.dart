@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:login/modules/auth/auth.dart';
+import 'package:login/modules/home/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,6 +24,10 @@ class MyApp extends StatelessWidget {
         ),
       ),
       home: const Auth(),
+      routes: {
+        '/auth': (context) => const Auth(),
+        '/home': (context) => const Home(),
+      },
     );
   }
 }
