@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Auth extends StatefulWidget {
   const Auth({super.key});
@@ -11,13 +12,24 @@ class Auth extends StatefulWidget {
 
 class _AuthState extends State<Auth> {
   final _formKey = GlobalKey<FormState>();
-  final _user = 'moviles';
-  final _password = 'moviles';
+  // final _user = 'moviles';
+  // final _password = 'moviles';
   final _showPasswordNotifier = ValueNotifier<bool>(false);
   final _userFocusNode = FocusNode();
   final _passwordFocusNode = FocusNode();
   final _userController = TextEditingController();
   final _passwordController = TextEditingController();
+
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((prefs) {
+      final user = prefs.getString('user') ?? '';
+      final password = prefs.getString('password') ?? '';
+      _userController.text = user;
+      _passwordController.text = password;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,9 +49,9 @@ class _AuthState extends State<Auth> {
                 if (value == null || value.isEmpty) {
                   return 'Please enter your user';
                 }
-                if (value != _user) {
-                  return 'Enter a valid user';
-                }
+                // if (value != _user) {
+                //   return 'Enter a valid user';
+                // }
                 return null;
               },
               decoration: const InputDecoration(
@@ -59,9 +71,9 @@ class _AuthState extends State<Auth> {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your password';
                     }
-                    if (value != _password) {
-                      return 'Enter a valid password';
-                    }
+                    // if (value != _password) {
+                    //   return 'Enter a valid password';
+                    // }
                     return null;
                   },
                   obscureText: !showPassword,
@@ -111,14 +123,18 @@ class _AuthState extends State<Auth> {
                       ),
                     ),
                   ).then((_) {
-                    if (_userController.text != _user) {
-                      _userFocusNode.requestFocus();
-                    } else if (_passwordController.text != _password) {
-                      _passwordFocusNode.requestFocus();
-                    }
+                    _userFocusNode.requestFocus();
+                    // if (_userController.text != _user) {
+                    // } else if (_passwordController.text != _password) {
+                    //   _passwordFocusNode.requestFocus();
+                    // }
                   });
                   return;
                 }
+                SharedPreferences.getInstance().then((prefs) {
+                  prefs.setString('user', _userController.text);
+                  prefs.setString('password', _passwordController.text);
+                });
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
