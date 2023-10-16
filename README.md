@@ -1,8 +1,10 @@
-# S8-U3-AC-01  Multiform Android APP
+# S9-U3-AC-02 Shared Preferences in Flutter
 
-A simple login Flutter project.
+A simple login Flutter project persisting user and password in shared preferences.
 
 ## App running
+https://github.com/Noel-S/S8-U3-AC-01/assets/30371531/742a0c66-bdcc-4230-8375-940253734b22
+
 ![image](https://github.com/Noel-S/S8-U3-AC-01/assets/30371531/b188ba3b-c1c6-494b-8d9a-cb53c775be24)
 
 ![image](https://github.com/Noel-S/S8-U3-AC-01/assets/30371531/291ac8ca-354d-4685-b864-d243bd52d0de)
